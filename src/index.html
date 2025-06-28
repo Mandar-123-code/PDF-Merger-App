@@ -15,8 +15,14 @@
             <a href="index.html" class="navbar-brand">
                 <i class="fas fa-file-pdf"></i> PDF Merger App
             </a>
+
+            <!-- 🌗 Dark Mode Toggle Button -->
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                <i id="theme-icon" class="fas fa-moon"></i>
+            </button>
         </div>
     </nav>
+
     <div class="container">
         <h1>PDF Merger App</h1>
         <p>Merge your PDF files easily and quickly!</p>
@@ -24,15 +30,24 @@
             <input type="file" id="file-input" multiple accept=".pdf">
             <label for="file-input">Upload PDF Files</label>
         </div>
+
         <ul id="file-list" class="file-list">
             <!-- File items will be dynamically added here by JavaScript -->
         </ul>
+
+        <!-- 🧹 Clear History Button -->
+        <button id="clear-history" class="button danger" style="background-color: #dc3545; margin-top: 10px;">
+            Clear Upload History
+        </button>
+
         <button id="merge-button" class="button">Merge PDFs</button>
+
         <div id="output-container" class="result">
             <p>Download your merged PDF:</p>
             <a id="output-link" href="#" class="button">Download</a>
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="scripts/app.js"></script>
 </body>
