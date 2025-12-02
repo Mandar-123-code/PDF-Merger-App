@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const themeToggleBtn = document.getElementById("theme-toggle");
   const themeIcon = document.getElementById("theme-icon");
   const clearHistoryBtn = document.getElementById("clear-history");
+  const uploadingText = document.getElementById("uploading-text");
 
   let pdfFiles = [];
   let historyOnly = false;
@@ -24,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
         fileList.appendChild(li);
       });
 
-      // ✅ Show clear history button only if no new PDFs are uploaded yet
       if (pdfFiles.length === 0) {
         clearHistoryBtn.style.display = "inline-block";
       } else {
@@ -48,12 +48,21 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Please upload valid PDF files.");
       return;
     }
-    pdfFiles = [...pdfFiles, ...newFiles];
-    saveHistory();
-    updateFileList();
-    clearHistoryBtn.style.display = "none";
-    historyOnly = false;
-    mergeButton.style.display = "inline-block"; // show merge button after upload
+
+    // ✅ Show "Uploading..." text
+    uploadingText.style.display = "block";
+
+    setTimeout(() => {
+      pdfFiles = [...pdfFiles, ...newFiles];
+      saveHistory();
+      updateFileList();
+      clearHistoryBtn.style.display = "none";
+      historyOnly = false;
+      mergeButton.style.display = "inline-block";
+
+      // ✅ Hide "Uploading..." text
+      uploadingText.style.display = "none";
+    }, 700);
   });
 
   function saveHistory() {
@@ -77,7 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const fileName = document.createElement("span");
       fileName.className = "file-name";
-      fileName.textContent = file.name;
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      fileName.textContent = `${file.name} (${fileSizeMB} MB)`;
 
       const fileURL = URL.createObjectURL(file);
       fileName.addEventListener("click", () => {
@@ -124,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
       li.appendChild(editBtn);
       li.appendChild(deleteBtn);
 
+      // Drag and drop events
       li.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("text/plain", index);
         li.classList.add("dragging");
@@ -171,9 +182,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       outputContainer.style.display = "block";
       outputContainer.innerHTML = `
-                <p>PDFs merged successfully! Download your merged PDF:</p>
-                <a id="output-link" href="${url}" class="button" download="merged.pdf">Download</a>
-            `;
+        <p>PDFs merged successfully! Download your merged PDF:</p>
+        <a id="output-link" href="${url}" class="button" download="merged.pdf">Download</a>
+      `;
     } catch (error) {
       console.error("Error merging PDFs:", error);
       alert("An error occurred while merging the PDFs. Please try again.");
