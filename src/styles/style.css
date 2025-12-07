@@ -383,7 +383,6 @@ body.dark-mode .no-files {
   color: #a0a0a0;
 }
 
-
 @media (max-width: 768px) {
   .navbar-container {
     flex-direction: column;
